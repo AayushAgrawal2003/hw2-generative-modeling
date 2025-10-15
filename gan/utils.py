@@ -2,7 +2,7 @@ import argparse
 import torch
 from cleanfid import fid
 from matplotlib import pyplot as plt
-
+from torchvision.utils import save_image
 
 def save_plot(x, y, xlabel, ylabel, title, filename):
     plt.plot(x, y)
@@ -40,7 +40,30 @@ def interpolate_latent_space(gen, path):
     # 3. Save out an image holding all 100 samples.
     # Use torchvision.utils.save_image to save out the visualization.
     ##################################################################
-    pass
+    z_dim = 128  # assuming 128-dim latent vector
+    steps = 10
+    fixed_val = 0.0  # for remaining dimensions
+
+    # Create a grid of interpolations for first two dimensions
+    z_samples = []
+    linspace = torch.linspace(-1, 1, steps)
+    for i in linspace:
+        for j in linspace:
+            z = torch.full((z_dim,), fixed_val)
+            z[0] = i
+            z[1] = j
+            z_samples.append(z)
+
+    z_samples = torch.stack(z_samples).cuda()  # move to GPU if needed
+
+    # Forward through generator
+    gen_images = gen.forward_given_samples(z_samples)
+
+    # Rescale images to [0,1] if needed
+    gen_images = (gen_images / 2) + 0.5
+
+    # Save as a single grid image
+    save_image(gen_images, path, nrow=steps)
     ##################################################################
     #                          END OF YOUR CODE                      #
     ##################################################################

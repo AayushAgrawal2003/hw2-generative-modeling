@@ -1,17 +1,60 @@
-vae_solutions/data/
-gan/data_gan/
-gan/data_ls_gan/
-gan/data_wgan_gp/
+# === Python ===
+__pycache__/
+*.so
+
+# === Environments ===
+.env
+.venv/
+venv/
+env/
+*.env
+*.ipynb_checkpoints
+
+# === Data ===
+data/
 datasets/
+*.csv
+*.tsv
+*.json
+*.zip
+*.tar
+*.gz
+*.h5
+*.npz
+*.npy
 
-gan_solutions/data_gan/
-gan_solutions/data_ls_gan/
-gan_solutions/data_wgan_gp/
-__pycache__
+# === Model Files ===
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.tflite
+*.joblib
+*.pkl
 
-diffusion_solutions/data_ddim/
-diffusion_solutions/data_ddpm/
-diffusion_solutions/epoch_199.pth
+# === Logs & Outputs ===
+logs/
+runs/
+results/
+output/
+outputs/
+*.log
+*.out
 
-flow_matching/flow_euler
-flow_matching/fm_final.pth
+# === Jupyter Notebook Checkpoints ===
+.ipynb_checkpoints/
+
+# === IDEs ===
+.vscode/
+.idea/
+*.swp
+
+# === System Files ===
+.DS_Store
+Thumbs.db
+
+# === Cache ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
