@@ -14,11 +14,15 @@ import time
 import os
 from utils import *
 
+
 def ae_loss(model, x):
     ##################################################################
     # TODO 2.2: Fill in MSE loss between x and its reconstruction.
     ##################################################################
-    loss = None
+    z = model.encoder(x)
+    recon = model.decoder(z)
+    
+    loss = F.mse_loss(recon,x) # Takes mean across batch by default
     ##################################################################
     #                          END OF YOUR CODE                      #
     ##################################################################
@@ -38,9 +42,14 @@ def vae_loss(model, x, beta = 1):
     # closed form, you can find the formula here:
     # (https://stats.stackexchange.com/questions/318748/deriving-the-kl-divergence-loss-for-vaes).
     ##################################################################
-    total_loss = None
-    recon_loss = None
-    kl_loss = None
+    mu, logvar = model.encoder(x)
+    std = torch.exp(0.5 * logvar)
+    eps = torch.randn_like(std)
+    z = mu + eps * std
+    output = model.decoder(z)
+    recon_loss = F.mse_loss(output, x, reduction='sum') / x.size(0)
+    kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / x.size(0)
+    total_loss = beta * kl_loss + recon_loss
     ##################################################################
     #                          END OF YOUR CODE                      #
     ##################################################################
